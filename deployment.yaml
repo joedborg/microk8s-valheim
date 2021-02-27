@@ -78,17 +78,26 @@ spec:
               hostPort: 2458
           env:
             - name: SERVER_NAME
-              value: TafDen
+              valueFrom:
+                secretKeyRef:
+                  name: valheim-server
+                  key: name
             - name: SERVER_WORLD
-              value: Valhalla
+              valueFrom:
+                secretKeyRef:
+                  name: valheim-server
+                  key: world
             - name: SERVER_PASSWORD
-              value: nedfat
+              valueFrom:
+                secretKeyRef:
+                  name: valheim-server
+                  key: password
             - name: SERVER_PORT
               value: "2456"
             - name: UPDATE_ON_RESTART
               value: "1"
           volumeMounts:
-            - mountPath: /data
+            - mountPath: /home/valheim
               name: valheim-data
 
 ---
