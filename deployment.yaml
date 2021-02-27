@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: valheim
+  labels:
+    name: valheim
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: valheim-pv
+  namespace: valheim
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/media/k8s/valheim"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: valheim-pvc
+  namespace: valheim 
+  labels:
+    app: valheim-server
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valheim-server 
+  namespace: valheim
+  labels:
+    app: valheim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valheim-server
+  template:
+    metadata:
+      labels:
+        app: valheim-server
+    spec:
+      volumes:
+        - name: valheim-data
+          persistentVolumeClaim:
+            claimName: valheim-pvc
+      containers:
+        - name: valheim-server
+          image: quay.io/cbrgm/valheim-docker:latest
+          ports:
+            - containerPort: 2456
+              protocol: UDP
+              hostPort: 2456
+            - containerPort: 2457
+              protocol: UDP
+              hostPort: 2457
+            - containerPort: 2458
+              protocol: UDP
+              hostPort: 2458
+          env:
+            - name: SERVER_NAME
+              value: TafDen
+            - name: SERVER_WORLD
+              value: Valhalla
+            - name: SERVER_PASSWORD
+              value: nedfat
+            - name: SERVER_PORT
+              value: "2456"
+            - name: UPDATE_ON_RESTART
+              value: "1"
+          volumeMounts:
+            - mountPath: /data
+              name: valheim-data
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: valheim-ports
+  namespace: valheim
+spec:
+  type: NodePort
+  selector:
+    app: valheim-server
+  ports:
+    - port: 2456
+      targetPort: 2456
+      nodePort: 32456
+      name: valheim-port-2456
+    - port: 2457
+      targetPort: 2457
+      nodePort: 32457
+      name: valheim-port-2457
+    - port: 2458
+      targetPort: 22458
+      nodePort: 32458
+      name: valheim-port-2458
