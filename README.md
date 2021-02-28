@@ -31,11 +31,13 @@ Copy the example secrets file and paste it into the current directory.
 cp ./examples/secrets.yaml .
 ```
 
-Set your own values in it and deploy it along with the deployment.
+Set your own values in it and apply it along with the deployment.
 
 ```
 microk8s kubectl apply -f ./deployment.yaml -f ./secrets.yaml
 ```
+
+This will create a `NodePort` service, mapping to `32456`, `32457`, `32458`.  To connect to the server via Steam or Valheim, use the address `${SERVER_IP}:32457`.  Where `${SERVER_IP}` is the IP or DNS address of the host that MicroK8s is running on.
 
 ## Cleaning up
 
