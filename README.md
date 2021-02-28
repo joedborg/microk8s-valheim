@@ -1,4 +1,4 @@
-# MicroK8s Valheim server
+# MicroK8s Valheim server
 
 Run a Vanleim server in MicroK8s!
 
