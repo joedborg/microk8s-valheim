@@ -10,7 +10,7 @@ This deployment assumes you have `/media/k8s/valheim` created and writable by
 MicroK8s.  If you prefer somewhere else for the persistent volume, you can
 modify `deployment.yaml`.
 
-## Deploying
+## Deploying
 
 Install [MicroK8s](https://microk8s.io) and enable required add-ons.
 
