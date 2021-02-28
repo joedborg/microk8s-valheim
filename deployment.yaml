@@ -67,15 +67,15 @@ spec:
         - name: valheim-server
           image: quay.io/cbrgm/valheim-docker:latest
           ports:
-            - containerPort: 2456
+            - containerPort: 32456
               protocol: UDP
-              hostPort: 2456
-            - containerPort: 2457
+              hostPort: 32456
+            - containerPort: 32457
               protocol: UDP
-              hostPort: 2457
-            - containerPort: 2458
+              hostPort: 32457
+            - containerPort: 32458
               protocol: UDP
-              hostPort: 2458
+              hostPort: 32458
           env:
             - name: SERVER_NAME
               valueFrom:
@@ -93,7 +93,7 @@ spec:
                   name: valheim-server
                   key: password
             - name: SERVER_PORT
-              value: "2456"
+              value: "32456"
             - name: UPDATE_ON_RESTART
               value: "1"
           volumeMounts:
@@ -112,15 +112,15 @@ spec:
   selector:
     app: valheim-server
   ports:
-    - port: 2456
-      targetPort: 2456
+    - port: 32456
+      targetPort: 32456
       nodePort: 32456
       name: valheim-port-2456
-    - port: 2457
-      targetPort: 2457
+    - port: 32457
+      targetPort: 32457
       nodePort: 32457
       name: valheim-port-2457
-    - port: 2458
-      targetPort: 22458
+    - port: 32458
+      targetPort: 32458
       nodePort: 32458
       name: valheim-port-2458
